@@ -9,11 +9,11 @@ public class HedgingPositionMgt {
 
     private ToweringXMLHTTPServiceClient client = new ToweringXMLHTTPServiceClient();
 
-	public CheckResult<HedgingPosition> hedgingPositionMgt(HedgingPosition hp) {
+	public CheckResult<HedgingPosition> hedgingPositionMgt(final HedgingPosition hp) {
 		CheckResult<HedgingPosition> result = new CheckResult<HedgingPosition>();
         sendHp(hp);
 		result.setCheckIsOk(true);
-		result.setResult(SerializationUtils.clone(hp));
+		result.setResult(hp);
 		return result;
 	}
 

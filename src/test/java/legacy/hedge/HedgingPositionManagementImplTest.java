@@ -30,6 +30,7 @@ public class HedgingPositionManagementImplTest {
         mgmt = new HedgingPositionManagementImpl();
         mgmt.headingPositionMgt = new MockHeadingPositionMgt();
         mgmt.trading = new MockTradingDataAccessServiceImpl();
+        mgmt.initializer = new HedgingPositionInitializer(mgmt.trading, mgmt.hpdas);
     }
 
     @Test(expected = NullPointerException.class)
