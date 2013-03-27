@@ -7,13 +7,19 @@ import org.apache.commons.lang3.SerializationUtils;
 
 public class HedgingPositionMgt {
 
-	public static CheckResult<HedgingPosition> hedgingPositionMgt(HedgingPosition hp) {
+    private ToweringXMLHTTPServiceClient client = new ToweringXMLHTTPServiceClient();
+
+	public CheckResult<HedgingPosition> hedgingPositionMgt(HedgingPosition hp) {
 		CheckResult<HedgingPosition> result = new CheckResult<HedgingPosition>();
-		InputEvent event = new InputEvent(hp);
-		ToweringXMLHTTPServiceClient.sendTicketToTowering(event);
+        sendHp(hp);
 		result.setCheckIsOk(true);
 		result.setResult(SerializationUtils.clone(hp));
 		return result;
 	}
+
+    protected void sendHp(HedgingPosition hp) {
+        InputEvent event = new InputEvent(hp);
+        client.sendTicketToTowering(event);
+    }
 
 }

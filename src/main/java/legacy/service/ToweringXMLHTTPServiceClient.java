@@ -5,7 +5,7 @@ import legacy.hedge.HedgingPosition;
 
 public class ToweringXMLHTTPServiceClient {
 
-	public static HedgingPosition sendTicketToTowering(InputEvent event) {
+	public HedgingPosition sendTicketToTowering(InputEvent event) {
 		for (int i = 1; i <= 100; i++) {
 			buildHttpRequestAndSendToTowering(event);
 			System.out.println("[remote] Sending HedgingPosition chunk #"+i+" to Towering");

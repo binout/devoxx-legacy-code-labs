@@ -27,6 +27,8 @@ public class HedgingPositionManagementImpl implements IHedgingPositionManagement
 	private static int MAX_DECIMALS = 4;
 	private static Logger LOGGER = Logger.getLogger(HedgingPositionManagementImpl.class.getName());
 	private ITransactionManagerService transactionManagerService = DataAccessService.getTransactionManagerService();
+    HedgingPositionMgt headingPositionMgt = new HedgingPositionMgt();
+    ITradingDataAccessService trading = DataAccessService.getTradingDataAccessService();
 
 	@Override
 	public CheckResult<HedgingPosition> initAndSendHedgingPosition(HedgingPosition hp) throws ARPSystemException {
@@ -84,7 +86,7 @@ public class HedgingPositionManagementImpl implements IHedgingPositionManagement
 			LOGGER.log(Level.FINEST,"Begin 3r party processing. stand by");
 		}
 		CheckResult<HedgingPosition> result;
-		result = HedgingPositionMgt.hedgingPositionMgt(hp);
+		result = headingPositionMgt.hedgingPositionMgt(hp);
 		if (LOGGER.isLoggable(Level.FINEST)) {
 			LOGGER.log(Level.FINEST,"3r party processing is now finished, thank you for your patience"); // t'es con michel
 		}
@@ -113,7 +115,6 @@ public class HedgingPositionManagementImpl implements IHedgingPositionManagement
 	}
 
 	private HedgingPosition initHedgingPosition(HedgingPosition hp) {
-		ITradingDataAccessService trading = DataAccessService.getTradingDataAccessService();
 		IHedgingPositionDataAccessService hpdas = DataAccessService.getHedgingPositionDataAccessService();
 		Transaction transaction = trading.getTransactionById(hp.getId());
 		long dId = trading.getOptionalIdFromTransaction(transaction);
