@@ -1,18 +1,28 @@
 package legacy.hedge;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import legacy.error.CheckResult;
+import legacy.error.ErrorLevel;
 import legacy.persistence.StorageActionEnum;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigInteger;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+@RunWith(JUnitParamsRunner.class)
 public class HedgingPositionManagementImplTest {
 
     HedgingPositionManagementImpl mgmt;
+
+    @Mock
+    HedgingPositionMgt headingPositionMgt;
 
     @Before
     public void before()  {
@@ -156,5 +166,33 @@ public class HedgingPositionManagementImplTest {
 
     }
 
+    Object[] give_status_and_error_level() {
+        return JUnitParamsRunner.$(
+                JUnitParamsRunner.$(ErrorLevel.CONNECT_ERROR, HedgingPositionStatusConst.REJECTED),
+                JUnitParamsRunner.$(ErrorLevel.FATAL_ERROR, null),
+                JUnitParamsRunner.$(ErrorLevel.FUNCTIONAL_ERROR, HedgingPositionStatusConst.REJECTED),
+                JUnitParamsRunner.$(ErrorLevel.BOOKING_MALFUNCTION, null)
+
+        );
+    }
+
+    @Test
+    @Parameters(method = "give_status_and_error_level")
+    public void checkStatus_with_error_level(ErrorLevel errorLevel,  HedgingPositionStatusConst status) {
+        mgmt.headingPositionMgt = headingPositionMgt;
+
+        HedgingPosition hp = new HedgingPosition();
+        hp.setId(0);
+        hp.setErrorLevel(errorLevel);
+        CheckResult<HedgingPosition> result = new CheckResult<>();
+        result.setResult(hp);
+        result.setCheckIsOk(false);
+        Mockito.when(headingPositionMgt.hedgingPositionMgt(hp)).thenReturn(result);
+
+        CheckResult<HedgingPosition> checkResult = mgmt.initAndSendHedgingPosition(hp);
+
+        HedgingPosition hpResult = checkResult.getResult();
+        assertThat(hpResult.getStatus()).isEqualTo(status);
+    }
 
 }

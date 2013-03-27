@@ -47,6 +47,13 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>pl.pragmatists</groupId>
+            <artifactId>JUnitParams</artifactId>
+            <version>0.3.6</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

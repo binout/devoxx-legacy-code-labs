@@ -26,9 +26,16 @@ public class HedgingPositionManagementImpl implements IHedgingPositionManagement
 
 	private static int MAX_DECIMALS = 4;
 	private static Logger LOGGER = Logger.getLogger(HedgingPositionManagementImpl.class.getName());
-	private ITransactionManagerService transactionManagerService = DataAccessService.getTransactionManagerService();
-    HedgingPositionMgt headingPositionMgt = new HedgingPositionMgt();
-    ITradingDataAccessService trading = DataAccessService.getTradingDataAccessService();
+
+    ITransactionManagerService transactionManagerService;
+    HedgingPositionMgt headingPositionMgt;
+    ITradingDataAccessService trading;
+
+    public HedgingPositionManagementImpl() {
+        transactionManagerService = DataAccessService.getTransactionManagerService();
+        headingPositionMgt = new HedgingPositionMgt();
+        trading = DataAccessService.getTradingDataAccessService();
+    }
 
 	@Override
 	public CheckResult<HedgingPosition> initAndSendHedgingPosition(HedgingPosition hp) throws ARPSystemException {
