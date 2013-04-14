@@ -54,6 +54,7 @@ public class HedgingPositionManagementImpl implements IHedgingPositionManagement
 			}
 			return result;
 		}
+
 		try {
 			result = hedgePositionBySendTo3rdParty(hp);
             hp = result.getResult();

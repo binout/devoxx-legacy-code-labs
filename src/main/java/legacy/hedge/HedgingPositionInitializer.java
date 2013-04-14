@@ -21,6 +21,8 @@ public class HedgingPositionInitializer {
     }
 
     public HedgingPosition initHedgingPosition(HedgingPosition hp) {
+
+        // Create Parameter class
         Transaction transaction = trading.getTransactionById(hp.getId());
         long dId = trading.getOptionalIdFromTransaction(transaction);
 
@@ -40,6 +42,9 @@ public class HedgingPositionInitializer {
         }
         String userIni = getUser();
         hp.setIkRtH(userIni);
+
+
+        // Apply command pattern : one method apply
         switch (hp.getType()) {
             case INI: {
                 String transactionWay = new String();
